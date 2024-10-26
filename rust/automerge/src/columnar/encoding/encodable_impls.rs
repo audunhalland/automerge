@@ -2,7 +2,7 @@ use super::{Encodable, Sink};
 
 use std::borrow::Cow;
 
-use smol_str::SmolStr;
+use compact_str::CompactString;
 
 /// Encodes bytes without a length prefix
 pub(crate) struct RawBytes<'a>(Cow<'a, [u8]>);
@@ -26,7 +26,7 @@ impl<'a> Encodable for RawBytes<'a> {
     }
 }
 
-impl Encodable for SmolStr {
+impl Encodable for CompactString {
     fn encode<S: Sink>(&self, buf: &mut S) -> usize {
         let bytes = self.as_bytes();
         let len_encoded = bytes.len().encode(buf);
@@ -35,7 +35,7 @@ impl Encodable for SmolStr {
     }
 }
 
-impl<'a> Encodable for Cow<'a, SmolStr> {
+impl<'a> Encodable for Cow<'a, CompactString> {
     fn encode<S: Sink>(&self, buf: &mut S) -> usize {
         self.as_ref().encode(buf)
     }
@@ -60,10 +60,10 @@ impl Encodable for Option<String> {
     }
 }
 
-impl<'a> Encodable for Option<Cow<'a, SmolStr>> {
+impl<'a> Encodable for Option<Cow<'a, CompactString>> {
     fn encode<S: Sink>(&self, out: &mut S) -> usize {
         if let Some(s) = self {
-            SmolStr::encode(s, out)
+            CompactString::encode(s, out)
         } else {
             0.encode(out)
         }

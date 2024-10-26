@@ -1,4 +1,4 @@
-use smol_str::SmolStr;
+use compact_str::CompactString;
 use std::{borrow::Cow, convert::TryFrom, io::Read, str};
 
 use super::{Decodable, DecodeError};
@@ -116,8 +116,8 @@ impl Decodable for Vec<u8> {
     }
 }
 
-impl Decodable for SmolStr {
-    fn decode<R>(bytes: &mut R) -> Result<SmolStr, DecodeError>
+impl Decodable for CompactString {
+    fn decode<R>(bytes: &mut R) -> Result<CompactString, DecodeError>
     where
         R: Read,
     {
@@ -128,12 +128,12 @@ impl Decodable for SmolStr {
     }
 }
 
-impl Decodable for Cow<'static, SmolStr> {
+impl Decodable for Cow<'static, CompactString> {
     fn decode<R>(bytes: &mut R) -> Result<Self, DecodeError>
     where
         R: std::io::Read,
     {
-        SmolStr::decode(bytes).map(Cow::Owned)
+        CompactString::decode(bytes).map(Cow::Owned)
     }
 }
 

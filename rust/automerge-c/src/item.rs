@@ -110,8 +110,8 @@ impl Value {
         use am::Value::*;
 
         if let Self::Value(Scalar(scalar)) = &self {
-            if let Str(smol_str) = scalar.as_ref() {
-                return Ok(smol_str.into());
+            if let Str(compact_str) = scalar.as_ref() {
+                return Ok(compact_str.into());
             }
         }
         Err(InvalidValueType {

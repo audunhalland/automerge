@@ -2,7 +2,7 @@ use automerge as am;
 
 use std::any::type_name;
 
-use smol_str::SmolStr;
+use compact_str::CompactString;
 
 use crate::byte_span::AMbyteSpan;
 
@@ -12,7 +12,7 @@ use crate::byte_span::AMbyteSpan;
 #[derive(PartialEq)]
 pub enum AMindex {
     /// A UTF-8 string key variant.
-    Key(SmolStr),
+    Key(CompactString),
     /// A 64-bit unsigned integer position variant.
     Pos(usize),
 }
@@ -28,7 +28,7 @@ impl TryFrom<&AMindex> for AMbyteSpan {
             return Ok(key.into());
         }
         Err(InvalidValueType {
-            expected: type_name::<SmolStr>().to_string(),
+            expected: type_name::<CompactString>().to_string(),
             unexpected: type_name::<usize>().to_string(),
         })
     }
@@ -46,7 +46,7 @@ impl TryFrom<&AMindex> for usize {
         }
         Err(InvalidValueType {
             expected: type_name::<usize>().to_string(),
-            unexpected: type_name::<SmolStr>().to_string(),
+            unexpected: type_name::<CompactString>().to_string(),
         })
     }
 }

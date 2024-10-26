@@ -65,7 +65,7 @@ impl<O> ElemId<O> {
 
 #[derive(Clone)]
 pub(crate) enum Key<'a, O> {
-    Prop(Cow<'a, smol_str::SmolStr>),
+    Prop(Cow<'a, compact_str::CompactString>),
     Elem(ElemId<O>),
 }
 

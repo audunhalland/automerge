@@ -13,7 +13,7 @@ pub(crate) enum SimpleColRange {
     /// A column containing RLE encoded u64's
     RleInt(RleRange<u64>),
     /// A column containing RLE encoded strings
-    RleString(RleRange<smol_str::SmolStr>),
+    RleString(RleRange<compact_str::CompactString>),
     /// A column containing delta -> RLE encoded i64s
     Delta(DeltaRange),
     /// A column containing boolean values
@@ -43,7 +43,7 @@ impl SimpleColRange {
 #[derive(Debug, Clone)]
 pub(crate) enum SimpleColIter<'a> {
     RleInt(RleDecoder<'a, u64>),
-    RleString(RleDecoder<'a, smol_str::SmolStr>),
+    RleString(RleDecoder<'a, compact_str::CompactString>),
     Delta(DeltaDecoder<'a>),
     Boolean(BooleanDecoder<'a>),
 }

@@ -6,8 +6,8 @@ use std::num::NonZeroU64;
 pub(crate) use crate::types::{ActorId, ChangeHash, ObjType, ScalarValue};
 pub(crate) use crate::value::DataType;
 
+use compact_str::CompactString;
 use serde::{Deserialize, Serialize};
-use smol_str::SmolStr;
 
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Copy, Hash)]
 #[serde(rename_all = "camelCase")]
@@ -92,7 +92,7 @@ impl ElementId {
 #[derive(Serialize, PartialEq, Eq, Debug, Hash, Clone)]
 #[serde(untagged)]
 pub enum Key {
-    Map(SmolStr),
+    Map(CompactString),
     Seq(ElementId),
 }
 
@@ -205,7 +205,7 @@ pub(crate) struct OpTypeParts {
     pub(crate) action: u64,
     pub(crate) value: ScalarValue,
     pub(crate) expand: bool,
-    pub(crate) mark_name: Option<smol_str::SmolStr>,
+    pub(crate) mark_name: Option<compact_str::CompactString>,
 }
 
 // Like `types::OpType` except using a String for mark names
@@ -286,7 +286,7 @@ impl OpType {
 
 #[derive(PartialEq, Debug, Clone)]
 pub struct MarkData {
-    pub name: smol_str::SmolStr,
+    pub name: compact_str::CompactString,
     pub value: ScalarValue,
     pub expand: bool,
 }

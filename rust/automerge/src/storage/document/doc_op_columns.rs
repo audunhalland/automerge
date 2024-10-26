@@ -42,7 +42,7 @@ pub(crate) struct DocOp {
     pub(crate) value: ScalarValue,
     pub(crate) succ: Vec<OpId>,
     pub(crate) expand: bool,
-    pub(crate) mark_name: Option<smol_str::SmolStr>,
+    pub(crate) mark_name: Option<compact_str::CompactString>,
 }
 
 #[derive(Debug, Clone)]
@@ -57,7 +57,7 @@ pub(crate) struct DocOpColumns {
     #[allow(dead_code)]
     other: Columns,
     expand: MaybeBooleanRange,
-    mark_name: RleRange<smol_str::SmolStr>,
+    mark_name: RleRange<compact_str::CompactString>,
 }
 
 /// A row to be encoded as an op in the document format
@@ -82,7 +82,7 @@ pub(crate) trait AsDocOp<'a> {
     fn val(&self) -> Cow<'a, ScalarValue>;
     fn succ(&self) -> Self::SuccIter;
     fn expand(&self) -> bool;
-    fn mark_name(&self) -> Option<Cow<'a, smol_str::SmolStr>>;
+    fn mark_name(&self) -> Option<Cow<'a, compact_str::CompactString>>;
 }
 
 impl DocOpColumns {
@@ -142,7 +142,7 @@ impl DocOpColumns {
         let mut val = ValueEncoder::new();
         let mut succ = OpIdListEncoder::new();
         let mut expand = MaybeBooleanEncoder::new();
-        let mut mark_name = RleEncoder::<_, smol_str::SmolStr>::new(Vec::new());
+        let mut mark_name = RleEncoder::<_, compact_str::CompactString>::new(Vec::new());
         for op in ops {
             obj.append(op.obj());
             key.append(op.key());
@@ -306,7 +306,7 @@ pub(crate) struct DocOpColumnIter<'a> {
     value: ValueIter<'a>,
     succ: OpIdListIter<'a>,
     expand: MaybeBooleanDecoder<'a>,
-    mark_name: RleDecoder<'a, smol_str::SmolStr>,
+    mark_name: RleDecoder<'a, compact_str::CompactString>,
 }
 
 impl<'a> DocOpColumnIter<'a> {
@@ -388,7 +388,7 @@ impl TryFrom<Columns> for DocOpColumns {
         let mut obj_ctr: Option<RleRange<u64>> = None;
         let mut key_actor: Option<RleRange<u64>> = None;
         let mut key_ctr: Option<DeltaRange> = None;
-        let mut key_str: Option<RleRange<smol_str::SmolStr>> = None;
+        let mut key_str: Option<RleRange<compact_str::CompactString>> = None;
         let mut id_actor: Option<RleRange<u64>> = None;
         let mut id_ctr: Option<DeltaRange> = None;
         let mut insert: Option<BooleanRange> = None;
@@ -398,7 +398,7 @@ impl TryFrom<Columns> for DocOpColumns {
         let mut succ_actor: Option<RleRange<u64>> = None;
         let mut succ_ctr: Option<DeltaRange> = None;
         let mut expand: Option<MaybeBooleanRange> = None;
-        let mut mark_name: Option<RleRange<smol_str::SmolStr>> = None;
+        let mut mark_name: Option<RleRange<compact_str::CompactString>> = None;
         let mut other = Columns::empty();
 
         for (index, col) in columns.into_iter().enumerate() {

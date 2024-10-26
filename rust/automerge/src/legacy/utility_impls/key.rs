@@ -1,6 +1,6 @@
 use std::cmp::{Ordering, PartialOrd};
 
-use smol_str::SmolStr;
+use compact_str::CompactString;
 
 use crate::legacy::{ElementId, Key, OpId};
 
@@ -44,6 +44,6 @@ where
     S: AsRef<str>,
 {
     fn from(s: S) -> Self {
-        Key::Map(SmolStr::new(s))
+        Key::Map(CompactString::new(s))
     }
 }

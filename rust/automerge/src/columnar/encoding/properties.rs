@@ -2,8 +2,8 @@
 
 use std::{fmt::Debug, ops::Range};
 
+use compact_str::CompactString;
 use proptest::prelude::*;
-use smol_str::SmolStr;
 
 use crate::{
     columnar::Key,
@@ -173,6 +173,6 @@ pub(crate) fn scalar_value() -> impl Strategy<Value = ScalarValue> + Clone {
     }
 }
 
-fn smol_str() -> impl Strategy<Value = SmolStr> + Clone {
-    any::<String>().prop_map(SmolStr::from)
+fn smol_str() -> impl Strategy<Value = CompactString> + Clone {
+    any::<String>().prop_map(CompactString::from)
 }

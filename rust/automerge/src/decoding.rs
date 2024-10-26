@@ -5,7 +5,7 @@ use std::{borrow::Cow, io, io::Read, str};
 use crate::error;
 use crate::legacy as amp;
 use crate::ActorId;
-use smol_str::SmolStr;
+use compact_str::CompactString;
 
 /// The error type for decoding operations.
 #[derive(Debug, thiserror::Error)]

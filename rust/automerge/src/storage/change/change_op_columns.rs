@@ -44,7 +44,7 @@ pub(crate) struct ChangeOp {
     pub(crate) action: u64,
     pub(crate) obj: ObjId,
     pub(crate) expand: bool,
-    pub(crate) mark_name: Option<smol_str::SmolStr>,
+    pub(crate) mark_name: Option<compact_str::CompactString>,
 }
 
 impl<'a, A: AsChangeOp<'a, ActorId = usize, OpId = OpId>> From<A> for ChangeOp {
@@ -110,7 +110,7 @@ impl<'a> AsChangeOp<'a> for &'a ChangeOp {
         self.expand
     }
 
-    fn mark_name(&self) -> Option<Cow<'a, smol_str::SmolStr>> {
+    fn mark_name(&self) -> Option<Cow<'a, compact_str::CompactString>> {
         self.mark_name.as_ref().map(Cow::Borrowed)
     }
 }
@@ -124,7 +124,7 @@ pub(crate) struct ChangeOpsColumns {
     val: ValueRange,
     pred: OpIdListRange,
     expand: MaybeBooleanRange,
-    mark_name: RleRange<smol_str::SmolStr>,
+    mark_name: RleRange<compact_str::CompactString>,
 }
 
 impl ChangeOpsColumns {
@@ -173,8 +173,10 @@ impl ChangeOpsColumns {
         let val = ValueRange::encode(ops.clone().map(|o| o.val()), out);
         let pred = OpIdListRange::encode(ops.clone().map(|o| o.pred()), out);
         let expand = MaybeBooleanRange::encode(ops.clone().map(|o| o.expand()), out);
-        let mark_name =
-            RleRange::encode::<Cow<'_, smol_str::SmolStr>, _>(ops.map(|o| o.mark_name()), out);
+        let mark_name = RleRange::encode::<Cow<'_, compact_str::CompactString>, _>(
+            ops.map(|o| o.mark_name()),
+            out,
+        );
         Self {
             obj,
             key,
@@ -200,7 +202,7 @@ impl ChangeOpsColumns {
         let mut val = ValueEncoder::new();
         let mut pred = OpIdListEncoder::new();
         let mut expand = MaybeBooleanEncoder::new();
-        let mut mark_name = RleEncoder::<_, smol_str::SmolStr>::new(Vec::new());
+        let mut mark_name = RleEncoder::<_, compact_str::CompactString>::new(Vec::new());
         for op in ops {
             tracing::trace!(expand=?op.expand(), "expand");
             obj.append(op.obj());
@@ -350,7 +352,7 @@ pub(crate) struct ChangeOpsIter<'a> {
     val: ValueIter<'a>,
     pred: OpIdListIter<'a>,
     expand: MaybeBooleanDecoder<'a>,
-    mark_name: RleDecoder<'a, smol_str::SmolStr>,
+    mark_name: RleDecoder<'a, compact_str::CompactString>,
 }
 
 impl<'a> ChangeOpsIter<'a> {
@@ -427,7 +429,7 @@ impl TryFrom<Columns> for ChangeOpsColumns {
         let mut obj_ctr: Option<RleRange<u64>> = None;
         let mut key_actor: Option<RleRange<u64>> = None;
         let mut key_ctr: Option<DeltaRange> = None;
-        let mut key_str: Option<RleRange<smol_str::SmolStr>> = None;
+        let mut key_str: Option<RleRange<compact_str::CompactString>> = None;
         let mut insert: Option<Range<usize>> = None;
         let mut action: Option<Range<usize>> = None;
         let mut val: Option<ValueRange> = None;
@@ -435,7 +437,7 @@ impl TryFrom<Columns> for ChangeOpsColumns {
         let mut pred_actor: Option<RleRange<u64>> = None;
         let mut pred_ctr: Option<DeltaRange> = None;
         let mut expand: Option<MaybeBooleanRange> = None;
-        let mut mark_name: Option<RleRange<smol_str::SmolStr>> = None;
+        let mut mark_name: Option<RleRange<compact_str::CompactString>> = None;
         let mut other = Columns::empty();
 
         for (index, col) in columns.into_iter().enumerate() {

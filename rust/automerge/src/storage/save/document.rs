@@ -126,7 +126,7 @@ impl<'a> AsChangeMeta<'a> for ChangeWithGraph<'a> {
         self.change.max_op()
     }
 
-    fn message(&self) -> Option<Cow<'a, smol_str::SmolStr>> {
+    fn message(&self) -> Option<Cow<'a, compact_str::CompactString>> {
         self.change.message().map(|m| Cow::Owned(m.into()))
     }
 

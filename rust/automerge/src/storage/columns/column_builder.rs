@@ -17,7 +17,10 @@ impl ColumnBuilder {
         )
     }
 
-    pub(crate) fn build_string(spec: ColumnSpec, range: RleRange<smol_str::SmolStr>) -> Column {
+    pub(crate) fn build_string(
+        spec: ColumnSpec,
+        range: RleRange<compact_str::CompactString>,
+    ) -> Column {
         Column::new(
             spec,
             GenericColumnRange::Simple(SimpleColRange::RleString(range)),

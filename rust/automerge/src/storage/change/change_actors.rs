@@ -248,7 +248,7 @@ where
         self.op.expand()
     }
 
-    fn mark_name(&self) -> Option<Cow<'aschangeop, smol_str::SmolStr>> {
+    fn mark_name(&self) -> Option<Cow<'aschangeop, compact_str::CompactString>> {
         self.op.mark_name()
     }
 }

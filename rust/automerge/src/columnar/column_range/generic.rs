@@ -53,7 +53,7 @@ pub(crate) enum CellValue {
 pub(crate) enum SimpleValue {
     Uint(Option<u64>),
     Int(Option<i64>),
-    String(Option<smol_str::SmolStr>),
+    String(Option<compact_str::CompactString>),
     Bool(bool),
     /// The contents of a value metadata and value raw column
     Value(ScalarValue),

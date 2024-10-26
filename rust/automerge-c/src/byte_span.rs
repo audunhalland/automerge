@@ -3,8 +3,8 @@ use std::cmp::Ordering;
 use std::convert::TryFrom;
 use std::os::raw::c_char;
 
+use compact_str::CompactString;
 use libc::{c_int, strlen};
-use smol_str::SmolStr;
 
 macro_rules! to_str {
     ($byte_span:expr) => {{
@@ -100,9 +100,9 @@ impl From<*const c_char> for AMbyteSpan {
     }
 }
 
-impl From<&SmolStr> for AMbyteSpan {
-    fn from(smol_str: &SmolStr) -> Self {
-        smol_str.as_bytes().into()
+impl From<&CompactString> for AMbyteSpan {
+    fn from(compact_str: &CompactString) -> Self {
+        compact_str.as_bytes().into()
     }
 }
 

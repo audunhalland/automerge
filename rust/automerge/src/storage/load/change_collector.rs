@@ -145,7 +145,7 @@ struct PartialChange<'a> {
     seq: u64,
     max_op: u64,
     timestamp: i64,
-    message: Option<smol_str::SmolStr>,
+    message: Option<compact_str::CompactString>,
     extra_bytes: Cow<'a, [u8]>,
     ops: Vec<OpIdx>,
 }

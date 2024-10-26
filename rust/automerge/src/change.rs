@@ -260,7 +260,7 @@ mod convert_expanded {
             self.action.expand()
         }
 
-        fn mark_name(&self) -> Option<Cow<'a, smol_str::SmolStr>> {
+        fn mark_name(&self) -> Option<Cow<'a, compact_str::CompactString>> {
             if let legacy::OpType::MarkBegin(legacy::MarkData { name, .. }) = &self.action {
                 Some(Cow::Borrowed(name))
             } else {

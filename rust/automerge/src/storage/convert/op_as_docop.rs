@@ -117,7 +117,7 @@ impl<'a> AsDocOp<'a> for OpAsDocOp<'a> {
         }
     }
 
-    fn mark_name(&self) -> Option<Cow<'a, smol_str::SmolStr>> {
+    fn mark_name(&self) -> Option<Cow<'a, compact_str::CompactString>> {
         if let OpType::MarkBegin(_, MarkData { name, .. }) = &self.op.action() {
             Some(Cow::Owned(name.clone()))
         } else {

@@ -14,7 +14,7 @@ use crate::{
 
 #[derive(Clone, Debug, PartialEq)]
 pub(crate) enum Key {
-    Prop(smol_str::SmolStr),
+    Prop(compact_str::CompactString),
     Elem(ElemId),
 }
 
@@ -22,14 +22,14 @@ pub(crate) enum Key {
 pub(crate) struct KeyRange {
     actor: RleRange<u64>,
     counter: DeltaRange,
-    string: RleRange<smol_str::SmolStr>,
+    string: RleRange<compact_str::CompactString>,
 }
 
 impl KeyRange {
     pub(crate) fn new(
         actor: RleRange<u64>,
         counter: DeltaRange,
-        string: RleRange<smol_str::SmolStr>,
+        string: RleRange<compact_str::CompactString>,
     ) -> Self {
         Self {
             actor,
@@ -46,7 +46,7 @@ impl KeyRange {
         &self.counter
     }
 
-    pub(crate) fn string_range(&self) -> &RleRange<smol_str::SmolStr> {
+    pub(crate) fn string_range(&self) -> &RleRange<compact_str::CompactString> {
         &self.string
     }
 
@@ -139,7 +139,7 @@ impl KeyRange {
 pub(crate) struct KeyIter<'a> {
     actor: RleDecoder<'a, u64>,
     counter: DeltaDecoder<'a>,
-    string: RleDecoder<'a, smol_str::SmolStr>,
+    string: RleDecoder<'a, compact_str::CompactString>,
 }
 
 impl<'a> KeyIter<'a> {
@@ -198,7 +198,7 @@ impl<'a> Iterator for KeyIter<'a> {
 pub(crate) struct KeyEncoder<S> {
     actor: RleEncoder<S, u64>,
     counter: DeltaEncoder<S>,
-    string: RleEncoder<S, smol_str::SmolStr>,
+    string: RleEncoder<S, compact_str::CompactString>,
 }
 
 impl KeyEncoder<Vec<u8>> {

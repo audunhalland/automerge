@@ -1607,7 +1607,7 @@ impl Automerge {
         struct Conversion {
             obj_id: ExId,
             prop: Prop,
-            text: smol_str::SmolStr,
+            text: compact_str::CompactString,
         }
         let mut to_convert = Vec::new();
         for (obj, ops) in self.ops.iter_objs() {

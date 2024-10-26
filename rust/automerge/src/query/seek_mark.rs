@@ -15,9 +15,9 @@ pub(crate) struct SeekMark<'a> {
     end: usize,
     found_begin: bool,
     found_end: bool,
-    mark_name: smol_str::SmolStr,
+    mark_name: compact_str::CompactString,
     next_mark: Option<Mark<'a>>,
-    super_marks: HashMap<OpId, smol_str::SmolStr>,
+    super_marks: HashMap<OpId, compact_str::CompactString>,
     marks: Vec<Mark<'a>>,
 }
 

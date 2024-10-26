@@ -233,7 +233,7 @@ impl<'de> Deserialize<'de> for Op {
                     }?,
                     RawOpType::MarkBegin => {
                         let name = name.ok_or_else(|| Error::missing_field("name"))?;
-                        let name = smol_str::SmolStr::new(name);
+                        let name = compact_str::CompactString::new(name);
                         let expand = expand.unwrap_or(false);
                         let value = unwrap_value(value, datatype)?;
                         OpType::MarkBegin(MarkData {

@@ -1,4 +1,4 @@
-use smol_str::SmolStr;
+use compact_str::CompactString;
 use std::fmt;
 use std::fmt::Display;
 use std::sync::Arc;
@@ -45,7 +45,7 @@ struct MarkAccItem {
 
 #[derive(Debug, Clone, PartialEq, Default)]
 pub(crate) struct MarkAccumulator {
-    marks: BTreeMap<SmolStr, Vec<MarkAccItem>>,
+    marks: BTreeMap<CompactString, Vec<MarkAccItem>>,
 }
 
 impl MarkAccumulator {
@@ -88,7 +88,7 @@ impl MarkAccumulator {
 
 #[derive(Debug, Clone, PartialEq, Default)]
 pub struct MarkSet {
-    marks: BTreeMap<SmolStr, ScalarValue>,
+    marks: BTreeMap<CompactString, ScalarValue>,
 }
 
 impl MarkSet {
@@ -102,7 +102,7 @@ impl MarkSet {
         self.marks.len()
     }
 
-    fn inner(&self) -> &BTreeMap<SmolStr, ScalarValue> {
+    fn inner(&self) -> &BTreeMap<CompactString, ScalarValue> {
         &self.marks
     }
 
@@ -110,11 +110,11 @@ impl MarkSet {
         self.marks.len()
     }
 
-    fn insert(&mut self, name: SmolStr, value: ScalarValue) {
+    fn insert(&mut self, name: CompactString, value: ScalarValue) {
         self.marks.insert(name, value);
     }
 
-    fn remove(&mut self, name: &SmolStr) {
+    fn remove(&mut self, name: &CompactString) {
         self.marks.remove(name);
     }
 
@@ -314,7 +314,7 @@ impl<'a> MarkStateMachine<'a> {
 
 #[derive(PartialEq, Debug, Clone)]
 pub struct MarkData {
-    pub name: SmolStr,
+    pub name: CompactString,
     pub value: ScalarValue,
 }
 

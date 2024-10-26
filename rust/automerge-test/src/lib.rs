@@ -222,7 +222,7 @@ pub enum RealizedObject {
 #[derive(PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
 pub enum OrdScalarValue {
     Bytes(Vec<u8>),
-    Str(smol_str::SmolStr),
+    Str(compact_str::CompactString),
     Int(i64),
     Uint(u64),
     F64(decorum::Total<f64>),
@@ -448,7 +448,7 @@ impl From<automerge::ScalarValue> for RealizedObject {
 
 impl From<&str> for RealizedObject {
     fn from(s: &str) -> Self {
-        RealizedObject::Value(OrdScalarValue::Str(smol_str::SmolStr::from(s)))
+        RealizedObject::Value(OrdScalarValue::Str(compact_str::CompactString::from(s)))
     }
 }
 

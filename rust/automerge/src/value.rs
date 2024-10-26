@@ -1,7 +1,7 @@
 use crate::error;
 use crate::types::ObjType;
+use compact_str::CompactString;
 use serde::{Deserialize, Serialize, Serializer};
-use smol_str::SmolStr;
 use std::borrow::Cow;
 use std::fmt;
 
@@ -269,15 +269,17 @@ impl<'a> From<String> for Value<'a> {
     }
 }
 
-impl<'a> From<SmolStr> for Value<'a> {
-    fn from(s: SmolStr) -> Self {
+impl<'a> From<CompactString> for Value<'a> {
+    fn from(s: CompactString) -> Self {
         Value::Scalar(Cow::Owned(ScalarValue::Str(s)))
     }
 }
 
 impl<'a> From<char> for Value<'a> {
     fn from(c: char) -> Self {
-        Value::Scalar(Cow::Owned(ScalarValue::Str(SmolStr::new(c.to_string()))))
+        Value::Scalar(Cow::Owned(ScalarValue::Str(CompactString::new(
+            c.to_string(),
+        ))))
     }
 }
 
@@ -439,7 +441,7 @@ impl From<&Counter> for f64 {
 #[serde(untagged)]
 pub enum ScalarValue {
     Bytes(Vec<u8>),
-    Str(SmolStr),
+    Str(CompactString),
     Int(i64),
     Uint(u64),
     F64(f64),
@@ -726,7 +728,7 @@ impl From<()> for ScalarValue {
 
 impl From<char> for ScalarValue {
     fn from(c: char) -> Self {
-        ScalarValue::Str(SmolStr::new(c.to_string()))
+        ScalarValue::Str(CompactString::new(c.to_string()))
     }
 }
 

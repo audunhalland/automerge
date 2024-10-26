@@ -29,7 +29,7 @@ pub(crate) struct ChangeMetadata<'a> {
     pub(crate) seq: u64,
     pub(crate) max_op: u64,
     pub(crate) timestamp: i64,
-    pub(crate) message: Option<smol_str::SmolStr>,
+    pub(crate) message: Option<compact_str::CompactString>,
     pub(crate) deps: Vec<u64>,
     pub(crate) extra: Cow<'a, [u8]>,
 }
@@ -47,7 +47,7 @@ pub(crate) trait AsChangeMeta<'a> {
     fn seq(&self) -> u64;
     fn max_op(&self) -> u64;
     fn timestamp(&self) -> i64;
-    fn message(&self) -> Option<Cow<'a, smol_str::SmolStr>>;
+    fn message(&self) -> Option<Cow<'a, compact_str::CompactString>>;
     fn deps(&self) -> Self::DepsIter;
     fn extra(&self) -> Cow<'a, [u8]>;
 }
@@ -58,7 +58,7 @@ pub(crate) struct DocChangeColumns {
     seq: DeltaRange,
     max_op: DeltaRange,
     time: DeltaRange,
-    message: RleRange<smol_str::SmolStr>,
+    message: RleRange<compact_str::CompactString>,
     deps: DepsRange,
     extra: ValueRange,
     #[allow(dead_code)]
@@ -186,7 +186,7 @@ pub(crate) struct DocChangeColumnIter<'a> {
     seq: DeltaDecoder<'a>,
     max_op: DeltaDecoder<'a>,
     time: DeltaDecoder<'a>,
-    message: Option<RleDecoder<'a, smol_str::SmolStr>>,
+    message: Option<RleDecoder<'a, compact_str::CompactString>>,
     deps: DepsIter<'a>,
     extra: ExtraDecoder<'a>,
 }
@@ -277,7 +277,7 @@ impl TryFrom<Columns> for DocChangeColumns {
         let mut seq: Option<DeltaRange> = None;
         let mut max_op: Option<DeltaRange> = None;
         let mut time: Option<DeltaRange> = None;
-        let mut message: Option<RleRange<smol_str::SmolStr>> = None;
+        let mut message: Option<RleRange<compact_str::CompactString>> = None;
         let mut deps: Option<DepsRange> = None;
         let mut extra: Option<ValueRange> = None;
         let mut other = Columns::empty();

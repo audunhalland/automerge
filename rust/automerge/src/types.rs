@@ -249,7 +249,7 @@ impl OpType {
     pub(crate) fn from_action_and_value(
         action: u64,
         value: ScalarValue,
-        mark_name: Option<smol_str::SmolStr>,
+        mark_name: Option<compact_str::CompactString>,
         expand: bool,
     ) -> OpType {
         match action {
